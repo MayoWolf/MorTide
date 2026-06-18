@@ -275,14 +275,16 @@ function StatPanel({
   label,
   value,
   detail,
+  className = '',
 }: {
   icon: ReactNode
   label: string
   value: string
   detail: string
+  className?: string
 }) {
   return (
-    <section className="stat-panel">
+    <section className={`stat-panel ${className}`.trim()}>
       <div className="stat-icon" aria-hidden="true">
         {icon}
       </div>
@@ -418,12 +420,14 @@ function App() {
               value={summary.current ? formatHeight(summary.current.height) : 'Outside range'}
             />
             <StatPanel
+              className="extreme-summary"
               detail={summary.nextHigh ? formatDayTime(summary.nextHigh.time) : 'not in loaded range'}
               icon={<ArrowUp size={19} />}
               label="Next high"
               value={summary.nextHigh ? formatHeight(summary.nextHigh.height) : 'No high'}
             />
             <StatPanel
+              className="extreme-summary"
               detail={summary.nextLow ? formatDayTime(summary.nextLow.time) : 'not in loaded range'}
               icon={<ArrowDown size={19} />}
               label="Next low"
@@ -446,6 +450,20 @@ function App() {
               <span>Updated {formatTime(loadState.loadedAt)}</span>
             </div>
             <TideChart predictions={loadState.predictions} extremes={loadState.extremes} now={loadState.loadedAt} />
+            <div className="chart-extremes" aria-label="Next high and low tides">
+              <div className="chart-extreme high">
+                <ArrowUp size={16} />
+                <span>Next high</span>
+                <strong>{summary.nextHigh ? formatHeight(summary.nextHigh.height) : 'No high'}</strong>
+                <small>{summary.nextHigh ? formatDayTime(summary.nextHigh.time) : 'not in range'}</small>
+              </div>
+              <div className="chart-extreme low">
+                <ArrowDown size={16} />
+                <span>Next low</span>
+                <strong>{summary.nextLow ? formatHeight(summary.nextLow.height) : 'No low'}</strong>
+                <small>{summary.nextLow ? formatDayTime(summary.nextLow.time) : 'not in range'}</small>
+              </div>
+            </div>
           </section>
         </>
       )}

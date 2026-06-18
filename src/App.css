@@ -244,6 +244,54 @@ h1 {
     #fbfcfb;
 }
 
+.chart-extremes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.chart-extreme {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 9px;
+  row-gap: 2px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(35, 51, 55, 0.12);
+  border-radius: 8px;
+  background: #fbfcfb;
+}
+
+.chart-extreme svg {
+  grid-row: 1 / 4;
+  color: #167a8b;
+}
+
+.chart-extreme.low svg {
+  color: #243337;
+}
+
+.chart-extreme span,
+.chart-extreme small {
+  color: #637276;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.chart-extreme strong {
+  color: #142022;
+  font-size: 1.22rem;
+  line-height: 1.05;
+}
+
+.chart-extreme small {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: none;
+}
+
 .grid-line,
 .time-line {
   stroke: rgba(35, 51, 55, 0.12);
@@ -431,6 +479,10 @@ h1 {
     margin-top: 8px;
   }
 
+  .extreme-summary {
+    display: none;
+  }
+
   .stat-panel {
     grid-template-columns: 1fr;
     gap: 7px;
@@ -491,7 +543,33 @@ h1 {
 
   .tide-chart {
     min-height: 0;
-    height: clamp(198px, 32svh, 245px);
+    height: max(66svh, 420px);
+  }
+
+  .chart-extremes {
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .chart-extreme {
+    padding: 8px;
+    border-radius: 7px;
+    column-gap: 7px;
+  }
+
+  .chart-extreme svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .chart-extreme span,
+  .chart-extreme small {
+    font-size: 0.62rem;
+    line-height: 1.05;
+  }
+
+  .chart-extreme strong {
+    font-size: 0.98rem;
   }
 
   .axis-label,
