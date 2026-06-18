@@ -1,0 +1,396 @@
+.app-shell {
+  width: min(1180px, 100%);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.topbar,
+.station-band,
+.summary-grid,
+.chart-surface,
+.status-surface {
+  border: 1px solid rgba(46, 68, 71, 0.13);
+  box-shadow: 0 18px 45px rgba(32, 55, 57, 0.08);
+}
+
+.topbar {
+  position: sticky;
+  z-index: 5;
+  top: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+}
+
+.brand,
+.station-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand span,
+.stat-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  color: #ffffff;
+  background: #167a8b;
+}
+
+.brand strong {
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.range-control {
+  display: inline-grid;
+  grid-template-columns: repeat(3, minmax(54px, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: 8px;
+  background: #e6efec;
+}
+
+.range-control button,
+.icon-button,
+.station-link,
+.status-surface button {
+  border: 0;
+  border-radius: 7px;
+  color: #243337;
+  background: transparent;
+}
+
+.range-control button {
+  height: 34px;
+  padding: 0 10px;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.range-control button.active {
+  background: #ffffff;
+  box-shadow: 0 6px 14px rgba(45, 64, 66, 0.12);
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  background: #243337;
+  color: #ffffff;
+}
+
+.station-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: end;
+  margin-top: 18px;
+  padding: clamp(24px, 5vw, 52px);
+  border-radius: 8px;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.68)),
+    radial-gradient(circle at 86% 22%, rgba(241, 112, 87, 0.22), transparent 30%),
+    radial-gradient(circle at 74% 80%, rgba(41, 160, 177, 0.24), transparent 30%),
+    #edf3ef;
+  overflow: hidden;
+}
+
+.eyebrow,
+.station-meta,
+.stat-panel p,
+.stat-panel span,
+.chart-heading p,
+.chart-heading span {
+  color: #637276;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1 {
+  max-width: 760px;
+  margin: 0;
+  color: #142022;
+  font-size: clamp(2.35rem, 7vw, 5.8rem);
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+.station-meta {
+  max-width: 680px;
+  margin: 16px 0 0;
+  font-size: 1rem;
+}
+
+.station-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(20, 32, 34, 0.12);
+  background: #ffffff;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 18px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(46, 68, 71, 0.13);
+}
+
+.stat-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  min-height: 128px;
+  padding: 18px;
+  background: #ffffff;
+}
+
+.stat-icon {
+  width: 38px;
+  height: 38px;
+  color: #142022;
+  background: #f3c766;
+}
+
+.stat-panel p,
+.chart-heading p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.stat-panel strong {
+  display: block;
+  margin-top: 8px;
+  color: #142022;
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.stat-panel span {
+  display: block;
+  margin-top: 7px;
+  font-size: 0.92rem;
+}
+
+.chart-surface {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.chart-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 4px 16px;
+}
+
+.chart-heading strong {
+  display: block;
+  margin-top: 5px;
+  color: #142022;
+  font-size: 1.18rem;
+}
+
+.chart-heading span {
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.tide-chart {
+  display: block;
+  width: 100%;
+  min-height: 280px;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(41, 160, 177, 0.08), rgba(243, 199, 102, 0.08)),
+    #fbfcfb;
+}
+
+.grid-line,
+.time-line {
+  stroke: rgba(35, 51, 55, 0.12);
+  stroke-width: 1;
+}
+
+.time-line {
+  stroke-dasharray: 4 8;
+}
+
+.axis-label,
+.now-label,
+.extreme text {
+  fill: #637276;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.y-label {
+  text-anchor: end;
+}
+
+.x-label {
+  text-anchor: middle;
+}
+
+.tide-area {
+  fill: url("#tideFill");
+}
+
+.tide-line {
+  fill: none;
+  stroke: #167a8b;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+
+.extreme circle {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+
+.extreme-h circle {
+  fill: #f17057;
+}
+
+.extreme-l circle {
+  fill: #243337;
+}
+
+.extreme text {
+  text-anchor: middle;
+  fill: #243337;
+}
+
+.now-line {
+  stroke: #f17057;
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+}
+
+.now-label {
+  fill: #be4f3d;
+}
+
+.status-surface {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  min-height: 340px;
+  margin-top: 18px;
+  padding: 32px;
+  border-radius: 8px;
+  color: #243337;
+  background: #ffffff;
+  text-align: center;
+}
+
+.status-surface svg {
+  color: #167a8b;
+}
+
+.status-surface.error {
+  color: #72382e;
+  background: #fff6f1;
+}
+
+.status-surface button {
+  height: 38px;
+  padding: 0 14px;
+  background: #243337;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .app-shell {
+    padding: 10px;
+  }
+
+  .topbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .range-control {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+
+  .station-band {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 10px;
+  }
+
+  .station-link {
+    width: 100%;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-panel {
+    min-height: 112px;
+  }
+
+  .chart-surface {
+    padding: 10px;
+  }
+
+  .chart-heading {
+    display: grid;
+  }
+
+  .chart-heading span {
+    white-space: normal;
+  }
+
+  .tide-chart {
+    min-height: 230px;
+  }
+}
