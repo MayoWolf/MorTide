@@ -234,7 +234,7 @@ h1 {
   white-space: nowrap;
 }
 
-.tide-chart {
+.tide-chart-frame {
   display: block;
   width: 100%;
   min-height: 280px;
@@ -242,6 +242,13 @@ h1 {
   background:
     linear-gradient(180deg, rgba(41, 160, 177, 0.08), rgba(243, 199, 102, 0.08)),
     #fbfcfb;
+  overflow: hidden;
+}
+
+.tide-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .chart-extremes {
@@ -327,7 +334,6 @@ h1 {
   stroke: #167a8b;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 4;
 }
 
 .extreme circle {
@@ -541,7 +547,7 @@ h1 {
     white-space: normal;
   }
 
-  .tide-chart {
+  .tide-chart-frame {
     min-height: 0;
     height: max(66svh, 420px);
   }
@@ -572,9 +578,4 @@ h1 {
     font-size: 0.98rem;
   }
 
-  .axis-label,
-  .now-label,
-  .extreme text {
-    font-size: 11px;
-  }
 }

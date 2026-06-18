@@ -8,7 +8,7 @@ import {
   Waves,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
 
 const STATION_ID = '9410135'
@@ -175,6 +175,29 @@ function getVisibleRange(points: TidePoint[]) {
   }
 }
 
+function useElementSize<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null)
+  const [size, setSize] = useState({ width: 900, height: 360 })
+
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return undefined
+
+    const observer = new ResizeObserver(([entry]) => {
+      setSize({
+        width: Math.max(1, Math.round(entry.contentRect.width)),
+        height: Math.max(1, Math.round(entry.contentRect.height)),
+      })
+    })
+
+    observer.observe(element)
+
+    return () => observer.disconnect()
+  }, [])
+
+  return { ref, size }
+}
+
 function TideChart({
   predictions,
   extremes,
@@ -184,11 +207,20 @@ function TideChart({
   extremes: TideExtreme[]
   now: Date
 }) {
-  const width = 900
-  const height = 360
-  const padding = { top: 22, right: 24, bottom: 50, left: 58 }
+  const { ref, size } = useElementSize<HTMLDivElement>()
+  const width = Math.max(size.width, 320)
+  const height = Math.max(size.height, 260)
+  const isNarrow = width < 520
+  const padding = isNarrow
+    ? { top: 30, right: 16, bottom: 54, left: 44 }
+    : { top: 22, right: 24, bottom: 50, left: 58 }
   const chartWidth = width - padding.left - padding.right
   const chartHeight = height - padding.top - padding.bottom
+  const axisFontSize = Math.round(Math.max(11, Math.min(16, height * 0.026)))
+  const markerFontSize = Math.round(Math.max(11, Math.min(15, height * 0.024)))
+  const markerRadius = Math.max(5.5, Math.min(9, height * 0.012))
+  const tideStrokeWidth = Math.max(4, Math.min(7, height * 0.009))
+  const nowLabelOffset = Math.max(16, height * 0.026)
   const startTime = predictions[0].time.getTime()
   const endTime = predictions[predictions.length - 1].time.getTime()
   const rawMin = Math.min(...predictions.map((point) => point.height))
@@ -213,60 +245,62 @@ function TideChart({
   const tickTimes = predictions.filter((point) => point.time.getMinutes() === 0 && point.time.getHours() % 6 === 0)
 
   return (
-    <svg className="tide-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Tide prediction graph">
-      <defs>
-        <linearGradient id="tideFill" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#29a0b1" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="#f3c766" stopOpacity="0.1" />
-        </linearGradient>
-      </defs>
+    <div className="tide-chart-frame" ref={ref}>
+      <svg className="tide-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Tide prediction graph">
+        <defs>
+          <linearGradient id="tideFill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#29a0b1" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#f3c766" stopOpacity="0.1" />
+          </linearGradient>
+        </defs>
 
-      {gridValues.map((value) => (
-        <g key={value}>
-          <line className="grid-line" x1={padding.left} x2={width - padding.right} y1={yScale(value)} y2={yScale(value)} />
-          <text className="axis-label y-label" x={padding.left - 14} y={yScale(value) + 4}>
-            {value.toFixed(1)}
-          </text>
-        </g>
-      ))}
-
-      {tickTimes.map((point) => (
-        <g key={point.time.toISOString()}>
-          <line className="time-line" x1={xScale(point.time.getTime())} x2={xScale(point.time.getTime())} y1={padding.top} y2={height - padding.bottom} />
-          <text className="axis-label x-label" x={xScale(point.time.getTime())} y={height - 20}>
-            {point.time.getHours() === 0 ? formatDateLabel(point.time) : formatTime(point.time)}
-          </text>
-        </g>
-      ))}
-
-      <path className="tide-area" d={areaPath} />
-      <path className="tide-line" d={linePath} />
-
-      {extremes.map((extreme) => {
-        const cx = xScale(extreme.time.getTime())
-        const cy = yScale(extreme.height)
-
-        if (cx < padding.left || cx > width - padding.right) return null
-
-        return (
-          <g className={`extreme extreme-${extreme.type.toLowerCase()}`} key={`${extreme.type}-${extreme.time.toISOString()}`}>
-            <circle cx={cx} cy={cy} r="5.5" />
-            <text x={cx} y={extreme.type === 'H' ? cy - 12 : cy + 22}>
-              {extreme.type}
+        {gridValues.map((value) => (
+          <g key={value}>
+            <line className="grid-line" x1={padding.left} x2={width - padding.right} y1={yScale(value)} y2={yScale(value)} />
+            <text className="axis-label y-label" fontSize={axisFontSize} x={padding.left - 10} y={yScale(value) + axisFontSize / 3}>
+              {value.toFixed(1)}
             </text>
           </g>
-        )
-      })}
+        ))}
 
-      {nowInRange && (
-        <g>
-          <line className="now-line" x1={xScale(currentTime)} x2={xScale(currentTime)} y1={padding.top} y2={height - padding.bottom} />
-          <text className="now-label" x={xScale(currentTime) + 8} y={padding.top + 16}>
-            now
-          </text>
-        </g>
-      )}
-    </svg>
+        {tickTimes.map((point) => (
+          <g key={point.time.toISOString()}>
+            <line className="time-line" x1={xScale(point.time.getTime())} x2={xScale(point.time.getTime())} y1={padding.top} y2={height - padding.bottom} />
+            <text className="axis-label x-label" fontSize={axisFontSize} x={xScale(point.time.getTime())} y={height - padding.bottom / 2.4}>
+              {point.time.getHours() === 0 ? formatDateLabel(point.time) : formatTime(point.time)}
+            </text>
+          </g>
+        ))}
+
+        <path className="tide-area" d={areaPath} />
+        <path className="tide-line" d={linePath} strokeWidth={tideStrokeWidth} />
+
+        {extremes.map((extreme) => {
+          const cx = xScale(extreme.time.getTime())
+          const cy = yScale(extreme.height)
+
+          if (cx < padding.left || cx > width - padding.right) return null
+
+          return (
+            <g className={`extreme extreme-${extreme.type.toLowerCase()}`} key={`${extreme.type}-${extreme.time.toISOString()}`}>
+              <circle cx={cx} cy={cy} r={markerRadius} />
+              <text fontSize={markerFontSize} x={cx} y={extreme.type === 'H' ? cy - markerRadius - 7 : cy + markerRadius + markerFontSize}>
+                {extreme.type}
+              </text>
+            </g>
+          )
+        })}
+
+        {nowInRange && (
+          <g>
+            <line className="now-line" x1={xScale(currentTime)} x2={xScale(currentTime)} y1={padding.top} y2={height - padding.bottom} />
+            <text className="now-label" fontSize={markerFontSize} x={xScale(currentTime) + 8} y={padding.top + nowLabelOffset}>
+              now
+            </text>
+          </g>
+        )}
+      </svg>
+    </div>
   )
 }
 
