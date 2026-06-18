@@ -1,0 +1,17 @@
+{
+  "name": "MorTide",
+  "short_name": "MorTide",
+  "description": "South San Diego Bay tide graph powered by NOAA tide predictions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f7f5",
+  "theme_color": "#163f46",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

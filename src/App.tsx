@@ -296,7 +296,7 @@ function StatPanel({
 }
 
 function App() {
-  const [days, setDays] = useState(3)
+  const [days, setDays] = useState(1)
   const [refreshIndex, setRefreshIndex] = useState(0)
   const [loadState, setLoadState] = useState<LoadState>({ status: 'loading' })
 
